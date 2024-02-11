@@ -11,7 +11,7 @@ and enhance your skills with valuable insights.
 Explore your GeoGuessr games like never before!''')
 st.divider()
 
-ncfa_guide_url = 'https://github.com/SafwanSipai/geo-insight?tab=readme-ov-file#geo-insight'
+ncfa_guide_url = 'https://github.com/SafwanSipai/geo-insight?tab=readme-ov-file#getting-your-_ncfa-cookie'
 
 ncfa = st.text_input('Enter your NCFA cookie ([click here to obtain yours](%s))' % ncfa_guide_url, None)
 if ncfa:
