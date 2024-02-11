@@ -334,7 +334,6 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
             if not game['forbidMoving'] and not game['forbidZooming'] and not game['forbidRotating']: # moving
                 mov_number_of_games += 1
                 mov_total_score += float(game['player']['totalScore']['amount'])
-                mov_total_distance_km += float(game['player']['totalDistance']['meters']['amount'])
                 mov_total_time_sec += float(game['player']['totalTime'])
                 for actual, guess in zip(game['rounds'], game['player']['guesses']):
                     mov_number_of_rounds += 1
@@ -344,7 +343,7 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
                     country_code = actual['streakLocationCode']
                     round_score = float(guess['roundScoreInPoints'])
                     round_distance_km = float(guess['distance']['meters']['amount'])
-                    
+                    mov_total_distance_km += round_distance_km
                     mov_guessed_locations.append({'lat': guess['lat'],
                                                   'lng': guess['lng'],
                                                   'score': guess['roundScoreInPoints']})
@@ -361,7 +360,6 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
             elif game['forbidMoving'] and not game['forbidZooming'] and not game['forbidRotating']: # no-moving
                 no_mov_number_of_games += 1
                 no_mov_total_score += float(game['player']['totalScore']['amount'])
-                no_mov_total_distance_km += float(game['player']['totalDistance']['meters']['amount'])
                 no_mov_total_time_sec += float(game['player']['totalTime'])
                 for actual, guess in zip(game['rounds'], game['player']['guesses']):
                     no_mov_number_of_rounds += 1
@@ -371,7 +369,7 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
                     country_code = actual['streakLocationCode']
                     round_score = float(guess['roundScoreInPoints'])
                     round_distance_km = float(guess['distance']['meters']['amount'])
-                    
+                    no_mov_total_distance_km += round_distance_km
                     no_mov_guessed_locations.append({'lat': guess['lat'],
                                                      'lng': guess['lng'],
                                                      'score': guess['roundScoreInPoints']})
@@ -389,7 +387,6 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
                 
                 nmpz_number_of_games += 1
                 nmpz_total_score += float(game['player']['totalScore']['amount'])
-                nmpz_total_distance_km += float(game['player']['totalDistance']['meters']['amount'])
                 nmpz_total_time_sec += float(game['player']['totalTime'])
                 for actual, guess in zip(game['rounds'], game['player']['guesses']):
                     nmpz_number_of_rounds += 1
@@ -399,7 +396,7 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
                     country_code = actual['streakLocationCode']
                     round_score = float(guess['roundScoreInPoints'])
                     round_distance_km = float(guess['distance']['meters']['amount'])
-                    
+                    nmpz_total_distance_km += round_distance_km
                     nmpz_guessed_locations.append({'lat': guess['lat'],
                                                    'lng': guess['lng'],
                                                    'score': guess['roundScoreInPoints']})
