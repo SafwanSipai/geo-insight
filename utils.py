@@ -462,7 +462,14 @@ def country_code_to_name(df):
 def plot_points_vs_time(stats):
     fig, ax = plt.subplots()
     y_ticks = [0, 1000, 2000, 3000, 4000, 5000]
-    ax.scatter(stats['round_wise_time'], stats['round_wise_points'], marker='.', color='b')
+    times = []
+    points = []
+    for time, point in zip(stats['round_wise_time'], stats['round_wise_points']):
+        if time < 150:
+            times.append(time)
+            points.append(point)
+            
+    ax.scatter(times, points, marker='.', color='b')
     ax.set_yticks(y_ticks)
     ax.set_xlabel('Round Time (s)')
     ax.set_ylabel('Points')
