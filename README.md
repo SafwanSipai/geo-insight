@@ -3,7 +3,7 @@
 GeoInsight is a web application that analyses your GeoGuessr games and provides you with metrics and 
 visualizations to better understand your style of play. 
 
-The web application can be accessed [here]()
+The web application can be accessed [here](https://geo-insight.streamlit.app/).
 
 If you want to install GeoInsight on your local machine, follow the instructions below.
 
