@@ -103,7 +103,7 @@ if ncfa:
             col1, col2, col3 = st.columns(3)
             col1.metric('Average Points', str(no_mov_stats['average_score']))
             col2.metric('Average Distance', str(no_mov_stats['average_distance']) + ' KM')
-            col3.metric('Average Time', str(no_mov_stats['average_time']) + ' seconds')
+            col3.metric('Average Game Time', str(no_mov_stats['average_time']) + ' seconds')
             
             st.write('Points lost per country - Least vs Most')
             col1, col2 = st.columns(2)
@@ -128,7 +128,7 @@ if ncfa:
             col1, col2, col3 = st.columns(3)
             col1.metric('Average Points', str(nmpz_stats['average_score']))
             col2.metric('Average Distance', str(nmpz_stats['average_distance']) + ' KM')
-            col3.metric('Average Time', str(nmpz_stats['average_time']) + ' seconds')
+            col3.metric('Average Game Time', str(nmpz_stats['average_time']) + ' seconds')
             
             st.write('Points lost per country - Least vs Most')
             col1, col2 = st.columns(2)
