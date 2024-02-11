@@ -20,7 +20,7 @@ if ncfa:
         game_tokens = utils.get_game_tokens(session)
 
     default_number_of_games = 100 if len(game_tokens) > 100 else len(game_tokens)
-    st.slider('How many games would you like to analyze?', 0, len(game_tokens), default_number_of_games,
+    st.slider('How many games would you like to analyze? (400 games ~ 1 min analysis time)', 0, len(game_tokens), default_number_of_games,
               step=10, key='slider', 
               help='''Adjusting the slider value determines the number of your most recent games to analyze. 
                       For instance, selecting '50' will analyze your fifty most recent games. 
