@@ -255,6 +255,7 @@ country_codes = {
     'vu': 'Vanuatu',
     'wf': 'Wallis and Futuna',
     'ws': 'Samoa',
+    'xk': 'Kosovo',
     'ye': 'Yemen',
     'yt': 'Mayotte',
     'za': 'South Africa',
