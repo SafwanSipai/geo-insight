@@ -453,7 +453,12 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
     }  
 
 def country_code_to_name(df):
-    df['Country'] = df['Country'].apply(lambda x:country_codes[x] if x else None)
+    def get_country_name(code):
+        try:
+            return country_codes[code]
+        except Exception as e:
+            return None
+    df['Country'] = df['Country'].apply(lambda x:get_country_name(x))
     return df
 
 def plot_points_vs_time(stats):
