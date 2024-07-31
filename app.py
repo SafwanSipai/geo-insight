@@ -31,123 +31,52 @@ if ncfa:
     if button:
         progress_bar = st.progress(0)
         stats = utils.get_stats(session, game_tokens, st.session_state.slider, progress_bar)
-        mov_stats= stats['moving']
-        no_mov_stats= stats['no-moving']
-        nmpz_stats= stats['nmpz']
+        mov_stats = stats['moving']
+        no_mov_stats = stats['no-moving']
+        nmpz_stats = stats['nmpz']
         
-        # plot points vs time graph
-        mov_points_vs_time_fig = utils.plot_points_vs_time(mov_stats)
-        no_mov_points_vs_time_fig = utils.plot_points_vs_time(no_mov_stats)
-        nmpz_points_vs_time_fig = utils.plot_points_vs_time(nmpz_stats)
+        def plot_and_display_data(stats, label):
+            # Extracting most and least stats for points and distances per country
+            most_pts, least_pts = utils.get_most_and_least_data(stats, type='points')
+            most_dist, least_dist = utils.get_most_and_least_data(stats, type='distance')
 
-        # get most and least stats for points and distances per country
-        mov_most_pts_lost_per_country, mov_least_pts_lost_per_country = utils.get_most_and_least_data(mov_stats, type='points')
-        mov_most_dist_per_country, mov_least_dist_per_country = utils.get_most_and_least_data(mov_stats, type='distance')
-        
-        no_mov_most_pts_lost_per_country, no_mov_least_pts_lost_per_country = utils.get_most_and_least_data(no_mov_stats, type='points')
-        no_mov_most_dist_per_country, no_mov_least_dist_per_country = utils.get_most_and_least_data(no_mov_stats, type='distance')
-        
-        nmpz_most_pts_lost_per_country, nmpz_least_pts_lost_per_country = utils.get_most_and_least_data(nmpz_stats, type='points')
-        nmpz_most_dist_per_country, nmpz_least_dist_per_country = utils.get_most_and_least_data(nmpz_stats, type='distance')
+            # Plotting figures
+            points_vs_time_fig = utils.plot_points_vs_time(stats)
+            points_hist_fig = utils.points_histogram(stats)
+            countries_bar_fig = utils.plot_countries_bar_chart(stats)
+            guessed_loc_fig = utils.plot_guessed_locations(stats['guessed_locations'])
 
-        # plot points histogram
-        mov_points_hist_fig = utils.points_histogram(mov_stats)
-        no_mov_points_hist_fig = utils.points_histogram(no_mov_stats)
-        nmpz_points_hist_fig = utils.points_histogram(nmpz_stats)
-        
-        # plot countries bar chart
-        mov_countries_bar_fig = utils.plot_countries_bar_chart(mov_stats)
-        no_mov_countries_bar_fig = utils.plot_countries_bar_chart(no_mov_stats)
-        nmpz_countries_bar_fig = utils.plot_countries_bar_chart(nmpz_stats)
-        
-        # plot guessed locations
-        mov_guessed_loc_fig = utils.plot_guessed_locations(mov_stats['guessed_locations'])
-        no_mov_guessed_loc_fig = utils.plot_guessed_locations(no_mov_stats['guessed_locations'])
-        nmpz_guessed_loc_fig = utils.plot_guessed_locations(nmpz_stats['guessed_locations'])
+            # Displaying data and figures in the corresponding tab
+            with label:
+                col1, col2 = st.columns(2)
+                col1.metric('Total Games', str(stats['number_of_games']))
+                col2.metric('Total Rounds', str(stats['number_of_rounds']))
+
+                col1, col2, col3 = st.columns(3)
+                col1.metric('Average Points', str(stats['average_score']))
+                col2.metric('Average Distance', str(stats['average_distance']) + ' KM')
+                col3.metric('Average Game Time', str(stats['average_time']) + ' seconds')
+
+                st.write('Points lost per country - Least vs Most')
+                col1, col2 = st.columns(2)
+                col1.dataframe(least_pts[::-1], hide_index=True)
+                col2.dataframe(most_pts, hide_index=True)
+
+                st.write('Distance per country - Least vs Most')
+                col1, col2 = st.columns(2)
+                col1.dataframe(least_dist[::-1], hide_index=True)
+                col2.dataframe(most_dist, hide_index=True)
+
+                st.pyplot(countries_bar_fig)
+                st.pyplot(points_vs_time_fig)
+                st.pyplot(points_hist_fig)
+                st.pyplot(guessed_loc_fig)
 
         progress_bar.empty()
         
         st.header('Singleplayer Games')
         mov, no_mov, nmpz = st.tabs(['Moving', 'No moving', 'NMPZ'])
         
-        with mov:
-            col1, col2 = st.columns(2)
-            col1.metric('Total Games', str(mov_stats['number_of_games']))
-            col2.metric('Total Rounds', str(mov_stats['number_of_rounds']))
-            
-            col1, col2, col3 = st.columns(3)
-            col1.metric('Average Points', str(mov_stats['average_score']))
-            col2.metric('Average Distance', str(mov_stats['average_distance']) + ' KM')
-            col3.metric('Average Game Time', str(mov_stats['average_time']) + ' seconds')
-            
-            st.write('Points lost per country - Least vs Most')
-            col1, col2 = st.columns(2)
-            col1.dataframe(mov_least_pts_lost_per_country[::-1], hide_index=True)
-            col2.dataframe(mov_most_pts_lost_per_country, hide_index=True)
-            
-            st.write('Distance per country - Least vs Most')
-            col1, col2 = st.columns(2)
-            col1.dataframe(mov_least_dist_per_country[::-1], hide_index=True)
-            col2.dataframe(mov_most_dist_per_country, hide_index=True)
-            
-            st.pyplot(mov_countries_bar_fig)
-            st.pyplot(mov_points_vs_time_fig)
-            st.pyplot(mov_points_hist_fig)
-            st.pyplot(mov_guessed_loc_fig)
-        
-        with no_mov:
-            col1, col2 = st.columns(2)
-            col1.metric('Total Games', str(no_mov_stats['number_of_games']))
-            col2.metric('Total Rounds', str(no_mov_stats['number_of_rounds']))
-            
-            col1, col2, col3 = st.columns(3)
-            col1.metric('Average Points', str(no_mov_stats['average_score']))
-            col2.metric('Average Distance', str(no_mov_stats['average_distance']) + ' KM')
-            col3.metric('Average Game Time', str(no_mov_stats['average_time']) + ' seconds')
-            
-            st.write('Points lost per country - Least vs Most')
-            col1, col2 = st.columns(2)
-            col1.dataframe(no_mov_least_pts_lost_per_country[::-1], hide_index=True)
-            col2.dataframe(no_mov_most_pts_lost_per_country, hide_index=True)
-            
-            st.write('Distance per country - Least vs Most')
-            col1, col2 = st.columns(2)
-            col1.dataframe(no_mov_least_dist_per_country[::-1], hide_index=True)
-            col2.dataframe(no_mov_most_dist_per_country, hide_index=True)
-            
-            st.pyplot(no_mov_countries_bar_fig)
-            st.pyplot(no_mov_points_vs_time_fig)
-            st.pyplot(no_mov_points_hist_fig)
-            st.pyplot(no_mov_guessed_loc_fig)
-            
-        with nmpz:
-            col1, col2 = st.columns(2)
-            col1.metric('Total Games', str(nmpz_stats['number_of_games']))
-            col2.metric('Total Rounds', str(nmpz_stats['number_of_rounds']))
-            
-            col1, col2, col3 = st.columns(3)
-            col1.metric('Average Points', str(nmpz_stats['average_score']))
-            col2.metric('Average Distance', str(nmpz_stats['average_distance']) + ' KM')
-            col3.metric('Average Game Time', str(nmpz_stats['average_time']) + ' seconds')
-            
-            st.write('Points lost per country - Least vs Most')
-            col1, col2 = st.columns(2)
-            col1.dataframe(nmpz_least_pts_lost_per_country[::-1], hide_index=True)
-            col2.dataframe(nmpz_most_pts_lost_per_country, hide_index=True)
-            
-            st.write('Distance per country - Least vs Most')
-            col1, col2 = st.columns(2)
-            col1.dataframe(nmpz_least_dist_per_country[::-1], hide_index=True)
-            col2.dataframe(nmpz_most_dist_per_country, hide_index=True)
-            
-            st.pyplot(nmpz_countries_bar_fig)
-            st.pyplot(nmpz_points_vs_time_fig)
-            st.pyplot(nmpz_points_hist_fig)
-            st.pyplot(nmpz_guessed_loc_fig)
-            
-            
-            
-            
-            
-        
-    
+        plot_and_display_data(mov_stats, mov)
+        plot_and_display_data(no_mov_stats, no_mov)
+        plot_and_display_data(nmpz_stats, nmpz)
