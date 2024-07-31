@@ -279,7 +279,6 @@ def get_game_tokens(session):
             payload_json = json.loads(entry['payload'])
             for payload in payload_json:
                 try:
-                    # print(payload['payload'])
                     if payload['payload']['gameMode'] == 'Standard':
                         game_tokens.append(payload['payload']['gameToken']) 
                 except Exception as e:
@@ -456,8 +455,9 @@ def get_stats(session, game_tokens, number_of_games, progress_bar):
 def country_code_to_name(df):
     def get_country_name(code):
         try:
-            return country_codes[code]
+            return country_codes[code.lower()]
         except Exception as e:
+            print(e)
             return None
     df['Country'] = df['Country'].apply(lambda x:get_country_name(x))
     return df
@@ -525,8 +525,8 @@ def points_histogram(stats):
 def plot_countries_bar_chart(stats):
 
     top_n = 10 if len(stats['countries']) > 10 else len(stats['countries'])
-    
-    new_stats = {country_codes[key]: value for key, value in stats['countries'].items() if key}
+
+    new_stats = {country_codes[key.lower()]: value for key, value in stats['countries'].items() if key}
     
     sorted_data = dict(sorted(new_stats.items(), key=lambda item: item[1], reverse=True)[:top_n])
 
